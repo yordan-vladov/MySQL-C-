@@ -3,8 +3,10 @@ using Org.BouncyCastle.Asn1.Icao;
 
 public class Program
 {
-    public static void SelectVillains(MySqlConnection con)
+    public static void SelectVillains(String cs)
     {
+        using var con = new MySqlConnection(cs);
+        con.Open();
         using var cmd = new MySqlCommand("SELECT v.Name, COUNT(m.Id) Minions FROM Minions m JOIN MinionsVillains mv ON m.Id = mv.MinionId JOIN Villains v ON mv.VillainId = v.Id GROUP BY v.Id; ", con);
         using MySqlDataReader rdr = cmd.ExecuteReader();
 
@@ -417,7 +419,7 @@ public class Program
     {
         string cs = @"server=localhost;userid=yordan;password=1234;database=MinionsDB";
 
-        //SelectVillains(con);
+        //SelectVillains(cs);
         //GetVillainMinions(cs, 5);
         //GetMinions(con, 5);
         //Console.WriteLine(GetVillain(cs, "Tony"));
